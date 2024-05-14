@@ -10,7 +10,6 @@ class UserPage extends StatefulWidget {
 }
 
 class _UserPageState extends State<UserPage> {
-  late final TabController _tabController;
   late Future<List<User>> futureUsers;
   final UserService userService = UserService();
 
@@ -23,45 +22,38 @@ class _UserPageState extends State<UserPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('TabBar Sample'),
-        bottom: TabBar(
-          controller: _tabController,
-          tabs: const <Widget>[
-            Tab(
-              icon: Icon(Icons.cloud_outlined),
+    _refreshUserList();
+    return DefaultTabController(
+      initialIndex: 1,
+      length: 2,
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Center(child: Text('User List')),
+          bottom: const TabBar(
+            tabs: <Widget>[
+              Tab(
+                icon: Icon(Icons.list_alt_rounded),
+              ),
+              Tab(
+                icon: Icon(Icons.person_add),
+              ),
+            ],
+          ),
+        ),
+        body: TabBarView(
+          children: <Widget>[
+            Center(
+              child: Column(
+                children: [_buildUserList()],
+              ),
             ),
-            Tab(
-              icon: Icon(Icons.beach_access_sharp),
-            ),
-            Tab(
-              icon: Icon(Icons.brightness_5_sharp),
+            Center(
+              child: Column(
+                children: [_buildAddUserForm()],
+              ),
             ),
           ],
         ),
-      ),
-      body: TabBarView(
-        controller: _tabController,
-        children:<Widget>[
-          Center(
-            child: Column(
-              children: [_buildUserList(),],
-            ),
-          ),
-         Center(
-            child: Column(
-              children: [_buildAddUserForm()],
-            ),
-          ),
-        ],
-      ),
-                floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          
-        },
-        tooltip: 'Add User',
-        child: const Icon(Icons.add),
       ),
     );
   }
@@ -190,21 +182,28 @@ class _UserPageState extends State<UserPage> {
 
   Widget _buildAddUserForm() {
     return Padding(
-      padding: EdgeInsets.all(8.0),
+      padding: EdgeInsets.all(10),
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: <Widget>[
+          Image.asset('assets/image/user.png', width: 200, height: 200,),
+          const SizedBox(height: 20),
           TextFormField(
               controller: firstnameController,
               decoration: InputDecoration(labelText: 'First Name')),
+              const SizedBox(height: 30),
           TextFormField(
               controller: lastnameController,
               decoration: InputDecoration(labelText: 'Last Name')),
+              const SizedBox(height: 30),
           TextFormField(
               controller: emailController, // Added email input field
               decoration: InputDecoration(labelText: 'Email')),
+              const SizedBox(height: 30),
+          const Padding(padding: EdgeInsets.all(10)),
           ElevatedButton(
-            onPressed: _addUser,
-            child: Text('Add User'),
+            onPressed: _addUser, 
+            child: const Text('Add User'),
           ),
         ],
       ),

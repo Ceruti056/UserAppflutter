@@ -1,6 +1,5 @@
 import 'package:appflutter/splash.screen.dart';
-import 'package:appflutter/theme.dart';
-import 'package:appflutter/user_page.dart';
+import 'package:appflutter/theme.dart'; 
 import 'package:flutter/material.dart';
 
 void main() {
@@ -12,7 +11,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home:UserPage(),
+      home:SplashScreen(),
       debugShowCheckedModeBanner: false,
        theme: MaterialTheme(Typography.blackCupertino).light(),
        darkTheme: MaterialTheme(Typography.blackCupertino).dark(),
