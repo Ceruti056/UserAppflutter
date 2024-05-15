@@ -86,7 +86,48 @@ class _UserPageState extends State<UserPage> {
           }
         },
       ),
+
+      // Padding(
+      //   padding: const EdgeInsets.all(8.0),
+      //   child: SearchAnchor(
+      //       builder: (BuildContext context, SearchController controller) {
+      //     return SearchBar(
+      //       controller: controller,
+      //       padding: const MaterialStatePropertyAll<EdgeInsets>(
+      //           EdgeInsets.symmetric(horizontal: 16.0)),
+      //       onTap: () {
+      //         controller.openView();
+      //       },
+      //       onChanged: (_) {
+      //         controller.openView();
+      //       },
+      //       leading: const Icon(Icons.search),
+      //     );
+      //   }, suggestionsBuilder:
+      //           (BuildContext context, SearchController controller) {
+      //     return List<ListTile>.generate(5, (int index) {
+      //       final String item = 'item $index';
+      //       return ListTile(
+      //         title: Text(item),
+      //         onTap: () {
+      //           setState(() {
+      //             controller.closeView(item);
+      //           });
+      //         },
+      //       );
+      //     });
+      //   }),
+      // ),
+
     );
+  }
+
+  void _clear() {
+    firstnameController.text = "";
+    lastnameController.text = "";
+    emailController.text = "";
+    tituloController.text = "";
+    pictureController.text = "";
   }
 
   Widget _buildEditAndDeleteButtons(User user) {
@@ -116,7 +157,7 @@ class _UserPageState extends State<UserPage> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text("Edit User"),
+        title: const Text("Edit User"),
         content: SingleChildScrollView(
           child: Column(
             mainAxisSize: MainAxisSize.min,
@@ -138,9 +179,10 @@ class _UserPageState extends State<UserPage> {
         ),
         actions: <Widget>[
           TextButton(
-            child: Text("Update"),
+            child: const Text("Update"),
             onPressed: () {
               _updateUser(user);
+              _clear();
               Navigator.of(context).pop();
             },
           ),
@@ -182,27 +224,31 @@ class _UserPageState extends State<UserPage> {
 
   Widget _buildAddUserForm() {
     return Padding(
-      padding: EdgeInsets.all(10),
+      padding: const EdgeInsets.all(10),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: <Widget>[
-          Image.asset('assets/image/user.png', width: 200, height: 200,),
+          Image.asset(
+            'assets/image/user.png',
+            width: 200,
+            height: 200,
+          ),
           const SizedBox(height: 20),
           TextFormField(
               controller: firstnameController,
               decoration: InputDecoration(labelText: 'First Name')),
-              const SizedBox(height: 30),
+          const SizedBox(height: 30),
           TextFormField(
               controller: lastnameController,
               decoration: InputDecoration(labelText: 'Last Name')),
-              const SizedBox(height: 30),
+          const SizedBox(height: 30),
           TextFormField(
               controller: emailController, // Added email input field
               decoration: InputDecoration(labelText: 'Email')),
-              const SizedBox(height: 30),
+          const SizedBox(height: 30),
           const Padding(padding: EdgeInsets.all(10)),
           ElevatedButton(
-            onPressed: _addUser, 
+            onPressed: _addUser,
             child: const Text('Add User'),
           ),
         ],
@@ -227,6 +273,7 @@ class _UserPageState extends State<UserPage> {
           .then((newUser) {
         _showSnackbar('User added successfully!');
         _refreshUserList();
+        _clear();
       }).catchError((error) {
         _showSnackbar('Failed to add user: $error');
       });
